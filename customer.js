@@ -1,70 +1,60 @@
-const loginBtn = document.getElementById("loginBtn");
-const logoutBtn = document.getElementById("logoutBtn");
-const restaurantsDiv = document.getElementById("restaurants");
+const loginBtn = document.getElementById("loginBtn")
+const logoutBtn = document.getElementById("logoutBtn")
+const restaurantsDiv = document.getElementById("restaurants")
 
-loginBtn.onclick = async () => {
+loginBtn.onclick = async function () {
 
-  const { data, error } = await supabase.auth.signInAnonymously();
+  const { data, error } = await supabase.auth.signInAnonymously()
 
   if (error) {
-    alert("Login failed");
-    console.error(error);
-    return;
+    alert("Login failed")
+    console.error(error)
+    return
   }
 
-  alert("Login successful");
+  alert("Login successful")
 
-  loadRestaurants();
+  loadRestaurants()
+}
 
-};
+logoutBtn.onclick = async function () {
 
-logoutBtn.onclick = async () => {
+  await supabase.auth.signOut()
 
-  await supabase.auth.signOut();
-
-  alert("Logged out");
-
-  restaurantsDiv.innerHTML = "";
-
-};
-
-
+  restaurantsDiv.innerHTML = ""
+}
 
 async function loadRestaurants() {
 
   const { data, error } = await supabase
     .from("restaurants")
-    .select("id,name");
+    .select("id,name")
 
   if (error) {
-    console.error(error);
-    alert("Failed to load restaurants");
-    return;
+    console.error(error)
+    alert("Restaurant load failed")
+    return
   }
 
-  restaurantsDiv.innerHTML = "";
+  restaurantsDiv.innerHTML = ""
 
   data.forEach(r => {
 
-    const el = document.createElement("div");
+    const div = document.createElement("div")
 
-    el.innerHTML =
-      "<b>" + r.name + "</b><br>" +
-      "ID: " + r.id + "<br><br>";
+    div.innerHTML =
+      "<b>" + r.name + "</b><br>ID: " + r.id + "<br><br>"
 
-    restaurantsDiv.appendChild(el);
+    restaurantsDiv.appendChild(div)
 
-  });
-
+  })
 }
-
-
 
 async function createOrder() {
 
-  const restaurantId = document.getElementById("restaurantId").value;
-  const distance = document.getElementById("distance").value;
-  const payment = document.getElementById("payment").value;
+  const restaurantId = document.getElementById("restaurantId").value
+  const distance = document.getElementById("distance").value
+  const payment = document.getElementById("payment").value
 
   const { data, error } = await supabase.rpc("create_order", {
     p_restaurant_id: restaurantId,
@@ -72,14 +62,13 @@ async function createOrder() {
     p_order_amount: 200,
     p_distance_km: distance,
     p_prep_time: 20
-  });
+  })
 
   if (error) {
-    console.error(error);
-    alert("Order failed");
-    return;
+    console.error(error)
+    alert("Order failed")
+    return
   }
 
-  alert("Order created: " + data);
-
+  alert("Order created: " + data)
 }
