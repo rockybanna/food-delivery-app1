@@ -1,81 +1,61 @@
-// --- LOGIN ---
-
-async function login() {
-
-  const { data, error } = await client.auth.signInAnonymously();
-
-  if (error) {
-    console.error("Login error:", error);
-    alert("Login failed");
-    return;
-  }
-
-  console.log("Login success");
-  loadRestaurants();
-}
-
-
-// --- LOGOUT ---
-
-async function logout() {
-  await client.auth.signOut();
-  console.log("Logged out");
-}
-
-
-// --- LOAD RESTAURANTS ---
-
 async function loadRestaurants() {
 
-  const { data, error } = await client
+  const { data, error } = await supabase
     .from("restaurants")
-    .select("*");
+    .select("*")
 
   if (error) {
-    console.error("Restaurant load error:", error);
-    return;
+    console.error(error)
+    return
   }
 
-  const container = document.getElementById("restaurants");
-  container.innerHTML = "";
+  const container = document.getElementById("restaurants")
+  container.innerHTML = ""
 
   data.forEach(r => {
 
-    const div = document.createElement("div");
-    div.innerHTML = `${r.name} (${r.id})`;
+    const div = document.createElement("div")
 
-    container.appendChild(div);
+    div.innerText = r.name + " (" + r.id + ")"
 
-  });
+    container.appendChild(div)
+
+  })
 
 }
 
 
-// --- CREATE ORDER ---
 
 async function createOrder() {
 
-  const restaurant_id = document.getElementById("restaurant_id").value;
-  const distance = document.getElementById("distance").value;
-  const payment_mode = document.getElementById("payment_mode").value;
+  const restaurant_id = document.getElementById("restaurant_id").value
+  const distance = document.getElementById("distance").value
+  const payment_mode = document.getElementById("payment_mode").value
 
-  const { data: userData } = await client.auth.getUser();
+  const { data, error } = await supabase.rpc("create_order", {
 
-  const { error } = await client
-    .from("orders")
-    .insert({
-      customer_user_id: userData.user.id,
-      restaurant_id: restaurant_id,
-      distance_km: distance,
-      payment_mode: payment_mode
-    });
+    p_restaurant: restaurant_id,
+    p_distance: distance,
+    p_payment: payment_mode
+
+  })
 
   if (error) {
-    console.error("Order error:", error);
-    alert("Order failed");
-    return;
+
+    console.error("Order error:", error)
+    alert("Order failed")
+
+    return
   }
 
-  alert("Order created");
+  alert("Order created: " + data)
 
 }
+
+
+
+document.addEventListener("DOMContentLoaded", () => {
+
+  loadRestaurants()
+
+})
