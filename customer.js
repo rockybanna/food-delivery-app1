@@ -1,6 +1,4 @@
-const supabase = window.supabaseClient;
-
-document.addEventListener("DOMContentLoaded", async () => {
+document.addEventListener("DOMContentLoaded", () => {
   loadRestaurants();
 });
 
@@ -15,8 +13,8 @@ async function login() {
   });
 
   if (error) {
-    alert("Login error");
     console.error(error);
+    alert("Login failed");
   } else {
     alert("OTP sent");
   }
@@ -41,7 +39,7 @@ async function loadRestaurants() {
     .select("id,name");
 
   if (error) {
-    console.error("Restaurant load error:", error);
+    console.error(error);
     return;
   }
 
@@ -85,11 +83,9 @@ async function createOrder() {
   });
 
   if (error) {
-
-    console.error("Order error:", error);
+    console.error(error);
     alert("Order failed");
     return;
-
   }
 
   alert("Order created: " + data);
