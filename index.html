@@ -1,8 +1,6 @@
 <!DOCTYPE html>
 <html>
-
 <head>
-
 <meta charset="UTF-8">
 <title>Food Delivery</title>
 
@@ -12,43 +10,37 @@
 
 <script src="config.js"></script>
 <script src="supabase.js"></script>
+<script src="customer.js"></script>
 
 </head>
-
 
 <body>
 
 <h1>Food Delivery</h1>
 
 <div id="login">
-
-<button id="loginBtn">Login</button>
-<button id="logoutBtn">Logout</button>
-
+  <button onclick="login()">Login</button>
+  <button onclick="logout()">Logout</button>
 </div>
 
 <hr>
 
 <h2>Restaurants</h2>
-
 <div id="restaurants"></div>
 
 <hr>
 
 <h2>Create Order</h2>
 
-<input id="restaurantId" placeholder="Restaurant ID">
+<input id="restaurant_id" placeholder="Restaurant ID">
 <input id="distance" placeholder="Distance KM">
 
-<select id="payment">
+<select id="payment_mode">
 <option value="WALLET">Wallet</option>
 <option value="COD">Cash on Delivery</option>
 </select>
 
 <button onclick="createOrder()">Create Order</button>
 
-<script src="customer.js"></script>
-
 </body>
-
 </html>
