@@ -1,5 +1,3 @@
-const supabase = window.supabaseClient;
-
 document.addEventListener("DOMContentLoaded", () => {
   loadRestaurants();
 });
@@ -10,7 +8,7 @@ async function login() {
 
   const phone = prompt("Enter phone with country code");
 
-  const { error } = await supabase.auth.signInWithOtp({
+  const { error } = await supabaseClient.auth.signInWithOtp({
     phone: phone
   });
 
@@ -27,7 +25,7 @@ async function login() {
 
 async function logout() {
 
-  await supabase.auth.signOut();
+  await supabaseClient.auth.signOut();
   alert("Logged out");
 
 }
@@ -36,7 +34,7 @@ async function logout() {
 
 async function loadRestaurants() {
 
-  const { data, error } = await supabase
+  const { data, error } = await supabaseClient
     .from("restaurants")
     .select("id,name");
 
@@ -76,7 +74,7 @@ async function createOrder() {
   const prep_time = 15;
 
   const { data, error } =
-    await supabase.rpc("create_order", {
+    await supabaseClient.rpc("create_order", {
 
       p_restaurant_id: restaurant_id,
       p_payment_mode: payment_mode,
