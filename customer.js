@@ -1,29 +1,38 @@
-const loginBtn = document.querySelector("#login button");
+// --- LOGIN ---
 
-loginBtn.onclick = async () => {
+async function login() {
 
-  const { data, error } = await supabase.auth.signInAnonymously();
+  const { data, error } = await client.auth.signInAnonymously();
 
   if (error) {
-    console.error(error);
+    console.error("Login error:", error);
     alert("Login failed");
     return;
   }
 
   console.log("Login success");
-
   loadRestaurants();
+}
 
-};
 
-async function loadRestaurants(){
+// --- LOGOUT ---
 
-  const { data, error } = await supabase
+async function logout() {
+  await client.auth.signOut();
+  console.log("Logged out");
+}
+
+
+// --- LOAD RESTAURANTS ---
+
+async function loadRestaurants() {
+
+  const { data, error } = await client
     .from("restaurants")
     .select("*");
 
-  if(error){
-    console.error(error);
+  if (error) {
+    console.error("Restaurant load error:", error);
     return;
   }
 
@@ -33,7 +42,7 @@ async function loadRestaurants(){
   data.forEach(r => {
 
     const div = document.createElement("div");
-    div.innerHTML = r.name + " (" + r.id + ")";
+    div.innerHTML = `${r.name} (${r.id})`;
 
     container.appendChild(div);
 
@@ -41,15 +50,18 @@ async function loadRestaurants(){
 
 }
 
-async function createOrder(){
+
+// --- CREATE ORDER ---
+
+async function createOrder() {
 
   const restaurant_id = document.getElementById("restaurant_id").value;
   const distance = document.getElementById("distance").value;
   const payment_mode = document.getElementById("payment_mode").value;
 
-  const { data: userData } = await supabase.auth.getUser();
+  const { data: userData } = await client.auth.getUser();
 
-  const { error } = await supabase
+  const { error } = await client
     .from("orders")
     .insert({
       customer_user_id: userData.user.id,
@@ -58,8 +70,8 @@ async function createOrder(){
       payment_mode: payment_mode
     });
 
-  if(error){
-    console.error(error);
+  if (error) {
+    console.error("Order error:", error);
     alert("Order failed");
     return;
   }
