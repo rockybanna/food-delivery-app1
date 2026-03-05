@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html>
+
 <head>
+
 <meta charset="UTF-8">
 <title>Food Delivery</title>
 
@@ -10,50 +12,43 @@
 
 <script src="config.js"></script>
 <script src="supabase.js"></script>
-<script src="customer.js"></script>
 
 </head>
+
 
 <body>
 
 <h1>Food Delivery</h1>
 
 <div id="login">
-  <button onclick="login()">Login</button>
-  <button onclick="logout()">Logout</button>
+
+<button id="loginBtn">Login</button>
+<button id="logoutBtn">Logout</button>
+
 </div>
 
 <hr>
 
 <h2>Restaurants</h2>
+
 <div id="restaurants"></div>
 
 <hr>
 
 <h2>Create Order</h2>
 
-<input id="restaurant_id" placeholder="Restaurant ID">
+<input id="restaurantId" placeholder="Restaurant ID">
 <input id="distance" placeholder="Distance KM">
 
-<select id="payment_mode">
+<select id="payment">
 <option value="WALLET">Wallet</option>
 <option value="COD">Cash on Delivery</option>
 </select>
 
 <button onclick="createOrder()">Create Order</button>
 
-<script>
-
-async function login(){
-  const phone = prompt("Enter phone")
-  await supabase.auth.signInWithOtp({ phone })
-}
-
-async function logout(){
-  await supabase.auth.signOut()
-}
-
-</script>
+<script src="customer.js"></script>
 
 </body>
+
 </html>
