@@ -1,6 +1,8 @@
-// Create a Supabase client using the CDN library loaded in index.html
+const { createClient } = supabase;
 
-const client = window.supabase.createClient(
+const supabaseClient = createClient(
   SUPABASE_URL,
   SUPABASE_ANON_KEY
 );
+
+window.supabase = supabaseClient;
