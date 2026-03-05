@@ -1,3 +1,25 @@
+async function login() {
+
+  const { data, error } = await supabase.auth.signInAnonymously()
+
+  if (error) {
+    console.error(error)
+    alert("Login failed")
+    return
+  }
+
+  console.log("Login success")
+
+  loadRestaurants()
+}
+
+async function logout() {
+
+  await supabase.auth.signOut()
+
+  location.reload()
+}
+
 async function loadRestaurants() {
 
   const { data, error } = await supabase
@@ -15,7 +37,6 @@ async function loadRestaurants() {
   data.forEach(r => {
 
     const div = document.createElement("div")
-
     div.innerText = r.name + " (" + r.id + ")"
 
     container.appendChild(div)
@@ -23,8 +44,6 @@ async function loadRestaurants() {
   })
 
 }
-
-
 
 async function createOrder() {
 
@@ -41,21 +60,10 @@ async function createOrder() {
   })
 
   if (error) {
-
     console.error("Order error:", error)
     alert("Order failed")
-
     return
   }
 
   alert("Order created: " + data)
-
 }
-
-
-
-document.addEventListener("DOMContentLoaded", () => {
-
-  loadRestaurants()
-
-})
