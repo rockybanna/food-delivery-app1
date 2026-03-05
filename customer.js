@@ -1,6 +1,38 @@
+const supabase = window.supabaseClient;
+
 document.addEventListener("DOMContentLoaded", async () => {
   loadRestaurants();
 });
+
+/* LOGIN */
+
+async function login() {
+
+  const phone = prompt("Enter phone number");
+
+  const { error } = await supabase.auth.signInWithOtp({
+    phone: phone
+  });
+
+  if (error) {
+    alert("Login error");
+    console.error(error);
+  } else {
+    alert("OTP sent");
+  }
+
+}
+
+/* LOGOUT */
+
+async function logout() {
+
+  await supabase.auth.signOut();
+  alert("Logged out");
+
+}
+
+/* LOAD RESTAURANTS */
 
 async function loadRestaurants() {
 
@@ -17,12 +49,16 @@ async function loadRestaurants() {
   container.innerHTML = "";
 
   data.forEach(r => {
+
     const div = document.createElement("div");
     div.innerText = r.name + " (" + r.id + ")";
     container.appendChild(div);
+
   });
 
 }
+
+/* CREATE ORDER */
 
 async function createOrder() {
 
@@ -49,9 +85,11 @@ async function createOrder() {
   });
 
   if (error) {
+
     console.error("Order error:", error);
     alert("Order failed");
     return;
+
   }
 
   alert("Order created: " + data);
