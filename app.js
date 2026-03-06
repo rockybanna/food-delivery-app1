@@ -1,4 +1,4 @@
-const supabase = window.supabase.createClient(
+const db = window.supabase.createClient(
   SUPABASE_URL,
   SUPABASE_ANON_KEY
 );
@@ -7,9 +7,9 @@ document.addEventListener("DOMContentLoaded", () => {
   loadRestaurants();
 });
 
-async function loadRestaurants() {
+async function loadRestaurants(){
 
-  const { data, error } = await supabase
+  const { data, error } = await db
   .from("restaurants")
   .select("id,name");
 
@@ -46,7 +46,7 @@ async function createOrder(){
   const prep_time = 15;
 
   const { data, error } =
-  await supabase.rpc("create_order",{
+  await db.rpc("create_order",{
 
     p_restaurant_id: restaurant_id,
     p_payment_mode: payment_mode,
